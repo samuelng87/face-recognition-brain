@@ -12,10 +12,7 @@ import 'tachyons';
 
 
 
-// const app = new Clarifai.App ({
-//     apiKey: '15769ef316d54213a0012db787c0a644'
-//   });
-
+C
 
   const returnsetupClarifaiJSONOptions = (imageUrl) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
@@ -66,12 +63,29 @@ class App extends Component {
   constructor() {
     super();this.state = {
       input: '',
+      imageUrl: '',
+      box:{}
     }
 
   }
 
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = data.response.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    console.log(width, height);
+    // return {
+    //   leftCol: clarifaiFace.left_col * width,
+    //   topRow: clarifaiFace.top_row * height,
+    //   rightCol: width - (clarifaiFace.right_col * width),
+    //   bottomRow: height - (clarifaiFace.bottom_row * height)
+    // }
+
+  }
+
     onInputChange = (event) => {
-     console.log(event.target.value);
+     this.setState({input: event.target.value});
     }
 
 
@@ -84,7 +98,6 @@ class App extends Component {
       fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnsetupClarifaiJSONOptions(this.state.input))
       .then(response => response.json())
         .then(response => {
-          console.log('hi', response)
           if (response) {
             fetch('http://localhost:3000/image', {
               method: 'put',
@@ -114,7 +127,7 @@ class App extends Component {
           <Rank />
           <ImageLinkForm onInputChange={this.onInputChange} 
                           onButtonSubmit={this.onButtonSubmit}  />
-          <FaceRecognition />
+          <FaceRecognition imageUrl={this.state.imageUrl} />
 
   
           
