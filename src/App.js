@@ -3,8 +3,9 @@ import ParticlesBg from 'particles-bg'
 import React, { Component } from 'react'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm'
 import Navigation from './components/Navigation/Navigation';
+import Signin from './components/Signin/Signin';
 import Rank from './components/Rank/Rank';
-import Logo from './components/Logo/Logo';
+import Logo from './components/Logo/Logo'; 
 import FaceRecognition from './components/FaceRecognition/FaceRecognition'
 import 'tachyons';
 
@@ -12,7 +13,10 @@ import 'tachyons';
 
 
 
-C
+// const app = new Clarifai.App ({
+//     apiKey: '15769ef316d54213a0012db787c0a644'
+//   });
+
 
   const returnsetupClarifaiJSONOptions = (imageUrl) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
@@ -64,7 +68,8 @@ class App extends Component {
     super();this.state = {
       input: '',
       imageUrl: '',
-      box:{}
+      box:{},
+      route:'signin'
     }
 
   }
@@ -74,14 +79,17 @@ class App extends Component {
     const image = document.getElementById('inputimage');
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log(width, height);
-    // return {
-    //   leftCol: clarifaiFace.left_col * width,
-    //   topRow: clarifaiFace.top_row * height,
-    //   rightCol: width - (clarifaiFace.right_col * width),
-    //   bottomRow: height - (clarifaiFace.bottom_row * height)
-    // }
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
+  }
 
+  displayFaceBox = (box) => {
+    console.log(box);
+    this.setState({box: box})
   }
 
     onInputChange = (event) => {
@@ -117,17 +125,26 @@ class App extends Component {
         .catch(err => console.log(err));
     }
 
+    onRouteChange = (route) => {
+      this.setState({route: route});
+    }
 
   render() {
     return (
       <div className="App">
           <ParticlesBg  color="add8e7" type="cobweb" num={435} bg={true} />
-          <Navigation />
-          <Logo />
+          <Navigation onRouteChange={this.onRouteChange}/>
+
+          { this.state.route === 'signin' 
+          ? <Signin onRouteChange={this.onRouteChange}/>
+          : <div>
+            <Logo />
           <Rank />
           <ImageLinkForm onInputChange={this.onInputChange} 
                           onButtonSubmit={this.onButtonSubmit}  />
-          <FaceRecognition imageUrl={this.state.imageUrl} />
+          <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+          </div>
+           }
 
   
           

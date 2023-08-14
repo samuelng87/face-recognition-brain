@@ -18,7 +18,7 @@ const defaultOptions = {
 
 const Logo = () => {
     return (
-        <div className='ma3 mt'>
+        <div className='ma3 mt0'>
             
                 <Tilt className="Tilt br4 shadow-3" options={{defaultOptions}} style={{ height: 150, width: 150 }}>
       <div className='Tilt-inner'>
