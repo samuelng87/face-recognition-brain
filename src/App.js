@@ -19,13 +19,14 @@ import "tachyons";
 
 const returnsetupClarifaiJSONOptions = (imageUrl) => {
   // Your PAT (Personal Access Token) can be found in the portal under Authentification
-  const PAT = "56434d4fdc8a4dfba248e2a5116a8c7a";
+  const PAT = "43538a82fe9f42678903206a62df1275";
   // Specify the correct user_id/app_id pairings
   // Since you're making inferences outside your app's scope
   const USER_ID = "fs5wlo2t0gos";
   const APP_ID = "test";
   // Change these to whatever model and image URL you want to use
   const MODEL_ID = "face-detection";
+  const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105'
   const IMAGE_URL = imageUrl;
 
   const raw = JSON.stringify({
@@ -48,9 +49,9 @@ const returnsetupClarifaiJSONOptions = (imageUrl) => {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Authorization': 'Key ' + PAT,
+      'Authorization': 'Key ' + PAT
     },
-    body: raw,
+    body: raw
   };
 
   return requestOptions;
@@ -64,24 +65,36 @@ class App extends Component {
       imageUrl: "",
       box: {},
       route: "home",
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: "", // Initialize the id property
+        // other user properties
+      }
     };
   }
 
 
 
   calculateFaceLocation = (data) => {
-    const clarifaiFace = data.response.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById("inputimage");
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - clarifaiFace.right_col * width,
-      bottomRow: height - clarifaiFace.bottom_row * height,
-    };
+    if (data && data.response && data.response.outputs[0]) {
+      const clarifaiFace = data.response.outputs[0].data.regions[0].region_info.bounding_box;
+      const image = document.getElementById("inputimage");
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - clarifaiFace.right_col * width,
+        bottomRow: height - clarifaiFace.bottom_row * height
+      };
+    } else {
+      // Handle the case where the data structure doesn't match your expectations
+      console.error("Invalid data structure from Clarifai API");
+      return {}; // Return an empty object or some default values
+    }
   };
+  
+
 
   displayFaceBox = (box) => {
     console.log(box);
@@ -94,33 +107,31 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    
-    // app.models.predict('face-detection',this.state.input)
-
+  
     fetch(
-      "https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs",
+      "https://api.clarifai.com/v2/models/face-detection/outputs",
       returnsetupClarifaiJSONOptions(this.state.input)
     )
-      .then((response) => response.json())
       .then((response) => {
-        if (response) {
-          fetch('http://localhost:3000/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              id: this.state.user.id
-            })
-          })
-            .then(response => response.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count}))
-            })
-
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
-        this.displayFaceBox(this.calculateFaceLocation(response))
+        return response.json();
       })
-      .catch(err => console.log(err));
-  }
+      .then((data) => {
+        if (data && data.outputs && data.outputs.length > 0) {
+          this.displayFaceBox(this.calculateFaceLocation(data));
+        } else {
+          console.error("Invalid data structure from Clarifai API");
+          // Handle the case where the data structure doesn't match your expectations
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching data from Clarifai API:", err);
+        // Handle the error, display an error message, or take appropriate action
+      });
+  };
+  
 
   onRouteChange = (route) => {
     if (route === 'signout') {
