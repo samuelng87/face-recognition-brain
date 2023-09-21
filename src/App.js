@@ -64,7 +64,7 @@ class App extends Component {
       input: "",
       imageUrl: "",
       box: {},
-      route: "home",
+      route: "signin",
       isSignedIn: false,
       user: {
         id: "", // Initialize the id property
@@ -73,6 +73,11 @@ class App extends Component {
     };
   }
 
+  // componentDidMount() {
+  //   fetch('http://localhost:3000')
+  //   .then(response => response.json())
+  //   .then(console.log)
+  // }
 
 
   calculateFaceLocation = (data) => {
@@ -94,6 +99,7 @@ class App extends Component {
     }
   };
   
+
 
 
   displayFaceBox = (box) => {
