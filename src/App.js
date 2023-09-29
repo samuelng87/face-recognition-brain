@@ -25,8 +25,8 @@ const returnsetupClarifaiJSONOptions = (imageUrl) => {
   const USER_ID = "fs5wlo2t0gos";
   const APP_ID = "test";
   // Change these to whatever model and image URL you want to use
-  const MODEL_ID = "face-detection";
-  const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105'
+  // const MODEL_ID = "face-detection";
+  // const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105'
   const IMAGE_URL = imageUrl;
 
   const raw = JSON.stringify({
@@ -67,10 +67,14 @@ class App extends Component {
       route: "signin",
       isSignedIn: false,
       user: {
-        id: "", // Initialize the id property
-        // other user properties
+        id: '124',
+        name: 'sally',
+        email: 'sally@example.com',
+        password: 'bananas',
+        entries:0,
+        joined: new Date()
       }
-    };
+    }
   }
 
   // componentDidMount() {
@@ -78,6 +82,17 @@ class App extends Component {
   //   .then(response => response.json())
   //   .then(console.log)
   // }
+
+  loadUser = (data) => {
+    this.setState ({user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        entries: data.entries,
+        joined: data.joined
+      }})
+    }
 
 
   calculateFaceLocation = (data) => {
@@ -169,9 +184,9 @@ class App extends Component {
             />
           </div>
         ) : route === "signin" ? (
-          <Signin onRouteChange={this.onRouteChange} />
+          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         )}
       </div>
     );

@@ -27,13 +27,17 @@ class Signin extends React.Component {
         password: this.state.signInPassword
       })
     })
-
-        this.props.onRouteChange('home')
-
+    .then(response => response.json())
+    .then(user => {
+      if (user.id) {
+        this.props.loadUSer(user)
+        this.props.onRouteChange('home');
+      }
+    })
   }
 
   render() {
-      const { onRouteChange } = this.props;
+      let { onRouteChange } = this.props;
     return (
       <article className="br4 ba b--black-5 mv4 w-50-m w-25-l mw6 shadow-5 center hover-bg-gray">
         <main className="pa4 black-80">
