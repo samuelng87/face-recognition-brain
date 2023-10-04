@@ -68,7 +68,7 @@ class App extends Component {
         email: '',
         password: '',
         entries:0,
-        joined: new Date()
+        joined: ''
       }
     }
   }

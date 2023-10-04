@@ -28,20 +28,19 @@ class Signin extends React.Component {
       })
     })
     .then(response => response.json())
-    .then(user => {
-      if (user.id) {
-        this.props.loadUSer(user)
+    .then(data => {
+      if (data === 'success') {
         this.props.onRouteChange('home');
       }
     })
   }
 
   render() {
-      let { onRouteChange } = this.props;
+      const { onRouteChange } = this.props;
     return (
       <article className="br4 ba b--black-5 mv4 w-50-m w-25-l mw6 shadow-5 center hover-bg-gray">
         <main className="pa4 black-80">
-          <form className="measure">
+          <div className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
               <legend className="f4 fw6 ph0 mh0">Sign In</legend>
               <div className="mt3">
@@ -85,7 +84,7 @@ class Signin extends React.Component {
                 Register
               </p>
             </div>
-          </form>
+          </div>
         </main>
       </article>
     );
