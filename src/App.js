@@ -53,14 +53,11 @@ const returnsetupClarifaiJSONOptions = (imageUrl) => {
   return requestOptions;
 };
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      input: "",
-      imageUrl: "",
+const initialState = {
+  input: '',
+      imageUrl:'',
       box: {},
-      route: "signin",
+      route: 'signin',
       isSignedIn: false,
       user: {
         id: '',
@@ -69,9 +66,16 @@ class App extends Component {
         password: '',
         entries:0,
         joined: ''
-      }
     }
   }
+
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = initialState
+  }
+
 
 
   loadUser = (data) => {
@@ -135,7 +139,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
@@ -149,7 +153,8 @@ class App extends Component {
         <ParticlesBg color="add8e7" type="cobweb" num={435} bg={true} />
         <Navigation isSignedIn={ isSignedIn} onRouteChange={this.onRouteChange} />
 
-        {route === "home" ? (
+        {route === "home" 
+        ? 
           <div>
             <Logo />
             <Rank 
@@ -165,11 +170,12 @@ class App extends Component {
               imageUrl={imageUrl}
             />
           </div>
-        ) : route === "signin" ? (
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        ) : (
-          <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        )}
+        : ( 
+          route === "signin" 
+            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            :<Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+        )
+          }
       </div>
     );
   }
