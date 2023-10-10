@@ -111,14 +111,13 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    this.setState({ imageUrl: this.state.input });
-  
+    this.setState({ imageUrl: this.state.input });  
+    
     fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnsetupClarifaiJSONOptions(this.state.input))
       .then(response => response.json())
       .then(response => {
-        console.log('hi', response)
         if (response) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://desolate-refuge-44098-b615e4fd0532.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
