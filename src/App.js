@@ -118,7 +118,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch('https://smart-brain-api-nu.vercel.app/image', {
+          fetch('https://desolate-refuge-44098-b615e4fd0532.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
