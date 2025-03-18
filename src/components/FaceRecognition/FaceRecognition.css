@@ -1,8 +1,161 @@
-.bounding-box {
-  position: absolute;
-  box-shadow: 0 0 0 3px #69ec48 inset;
+/* New flexible layout */
+.analysis-container {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  cursor: pointer;
+  gap: 25px;
+  margin: 25px auto;
+  max-width: 1200px;
+}
+
+.image-section {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.image-wrapper:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.image-wrapper img {
+  display: block;
+  max-width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Styling for the analysis dialog */
+.analysis-dialog {
+  position: relative;
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  z-index: 10;
+  max-height: 500px; /* Match the typical image height */
+  overflow: hidden; /* Ensure the container itself doesn't scroll */
+  flex: 0 0 auto;
+  align-self: flex-start;
+  transition: all 0.3s ease-in-out;
+}
+
+.analysis-dialog:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.analysis-dialog h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #2a2a2a;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 10px;
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 2;
+}
+
+.analysis-content {
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 10px 5px;
+  line-height: 1.5;
+  font-size: 1rem;
+  color: #333;
+}
+
+.analysis-content p {
+  margin: 8px 0;
+}
+
+/* Image error container */
+.image-error-container {
+  width: 500px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.image-error-message {
+  text-align: center;
+  color: #e53935;
+  padding: 20px;
+  max-width: 80%;
+  font-size: 1rem;
+}
+
+/* Loading spinner */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 1050px) {
+  .analysis-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .analysis-dialog {
+    width: 500px;
+    margin-top: 20px;
+    max-height: 400px;
+  }
+  
+  .analysis-content {
+    max-height: 320px;
+  }
+}
+
+/* Scrollbar styling for the analysis content */
+.analysis-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.analysis-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.analysis-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.analysis-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

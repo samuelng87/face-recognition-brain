@@ -20,9 +20,9 @@ const Logo = () => {
     return (
         <div className='ma3 mt0'>
             
-                <Tilt className="Tilt br4 shadow-3" options={{defaultOptions}} style={{ height: 150, width: 150 }}>
+                <Tilt className="Tilt br4 shadow-3" options={{defaultOptions}} style={{ height: 50, width: 50 }}>
       <div className='Tilt-inner'>
-          <img style={{paddingTop: '1.5em'}}alt='logo' src={brain}/>
+          <img alt='logo' src={brain}/>
       </div>
 
     </Tilt>

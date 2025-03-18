@@ -80,4 +80,24 @@
       transparent
     );
   background-size: 100px 50px;
+  transition: all 0.2s ease-in-out;
+}
+
+.guidelines {
+  max-width: 700px;
+  background-color: rgba(230, 245, 255, 0.7);
+  border-left: 4px solid #2196f3;
+}
+
+.guidelines ul {
+  margin: 0;
+}
+
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.03);
+  background-color: #1e88e5 !important;
 }
